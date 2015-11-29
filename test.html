@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
-    
+
     <head>
         <meta charset="utf-8">
         <meta name='viewport' content="width=device-width,initial-scale=1,maximum-scale=1">
         <title>Notie Test Page</title>
-        
+
         <!-- Font -->
         <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
-        
+
         <style>
             body {
                 margin: 0;
@@ -37,17 +37,17 @@
                 margin-top: 4px;
             }
         </style>
-        
-        
+
+
     </head>
-    
-    
-    
+
+
+
     <body>
-        
+
         <div class="div-ext">
             <div class="div-int">
-                
+
                 <span>Test notie with these buttons:</span>
                 <br>
                 <button onclick="success();">Success</button>
@@ -62,34 +62,34 @@
                 <span>Official page:</span>
                 <br>
                 <a href="https://jaredreich.com/projects/notie.js" target="_blank">https://jaredreich.com/projects/notie</a>
-                
+
             </div>
         </div>
-        
+
         <script>
-            
+
             function success() {
                 notie.alert(1, 'Success!', 2);
             }
-            
+
             function warning() {
                 notie.alert(2, 'Warning<br><b>with</b><br><i>HTML</i><br><u>included.</u>', 2);
             }
-            
+
             function error() {
                 notie.alert(3, 'Error.', 2);
             }
-            
+
             function info() {
                 notie.alert(4, 'Information.', 2);
             }
-            
+
             function confirm() {
                 notie.confirm('Are you sure you want to do that?<br><b>That\'s a bold move...</b>', 'Yes', 'Cancel', function() {
                     notie.alert(1, 'Good choice!', 2);
                 });
             }
-            
+
             function input() {
                 notie.input('Please enter your email address:', 'Submit', 'Cancel', 'email', 'name@example.com', function(value_entered) {
                     notie.alert(1, 'You entered: ' + value_entered, 2);
@@ -99,15 +99,24 @@
             function progress() {
                 a = notie.progress();
                 window.setTimeout(function() {
-                    notie.progress_add(a, 44)
+                    notie.progress_refresh(a, 44);
+                    window.setTimeout(function() {
+                        notie.progress_refresh(a, 67);
+                        window.setTimeout(function() {
+                            notie.progress_refresh(a, 97);
+                            window.setTimeout(function() {
+                                notie.progress_refresh(a, 100);
+                            },1000);
+                        },1000);
+                    }, 1000);
                 }, 2000);
             }
-            
+
         </script>
-        
+
         <!-- JavaScript -->
 		<script src="notie.js"></script>
-        
+
     </body>
-    
+
 </html>

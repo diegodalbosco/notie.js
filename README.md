@@ -47,6 +47,8 @@ bower install notie
 notie.alert(style_number, 'message', time_in_seconds);
 notie.confirm('Title text', 'Yes button text', 'No button text', yes_callback)
 notie.input('Title text', 'Submit button text', 'Cancel button text', 'type', 'placeholder', submit_callback, 'Optional pre-filled value');
+var progress = notie.progress();
+notie.progress_refresh(progress, 12);
 ```
 For example:
 ```javascript
@@ -101,6 +103,11 @@ var confirm_and_input_color_text = '#FFF';
 var confirm_and_input_color_yes_text = '#FFF';
 var confirm_and_input_color_no_text = '#FFF';
 
+// notie.progress color
+var progress_color_text = '#FFF';
+var progress_outer_background = '#E3B771';
+var progress_inner_background = '#E1715B';
+
 // ID's for use within your own .css file (OPTIONAL)
 // (Be sure to use !important to override the javascript)
 // Example: #notie-alert-inner { padding: 30px !important; }
@@ -109,7 +116,7 @@ var alert_inner_id = 'notie-alert-inner';
 var alert_text_id = 'notie-alert-text';
 var confirm_outer_id = 'notie-confirm-outer';
 var confirm_inner_id = 'notie-confirm-inner';
-var confirm_backdrop_id = 'notie-confirm-backdrop';
+var confirm_background_id = 'notie-confirm-background';
 var confirm_yes_id = 'notie-confirm-yes';
 var confirm_no_id = 'notie-confirm-no';
 var confirm_text_id = 'notie-confirm-text';
@@ -117,7 +124,7 @@ var confirm_yes_text_id = 'notie-confirm-yes-text';
 var confirm_no_text_id = 'notie-confirm-no-text';
 var input_outer_id = 'notie-input-outer';
 var input_inner_id = 'notie-input-inner';
-var input_backdrop_id = 'notie-input-backdrop';
+var input_background_id = 'notie-input-background';
 var input_div_id = 'notie-input-div';
 var input_field_id = 'notie-input-field';
 var input_yes_id = 'notie-input-yes';
@@ -125,6 +132,9 @@ var input_no_id = 'notie-input-no';
 var input_text_id = 'notie-input-text';
 var input_yes_text_id = 'notie-input-yes-text';
 var input_no_text_id = 'notie-input-no-text';
+var progress_outer_id = 'progress_outer';
+var progress_inner_id = 'progress_inner';
+var progress_text_id = 'progress_text';
 ```
 
 ## License
