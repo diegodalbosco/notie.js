@@ -762,13 +762,205 @@ var notie = function(){
         }, (animation_delay * 1000 + 10));
 
     }
+
+
+    // NOTIE.PROGRESS
+    // *********************************************
+    progress_outer_id = 'progress_outer';
+    progress_inner_id = 'progress_inner';
+    progress_text_id = 'progress_text';
+    progress_color_text = '#000000';
+    progress_color_success_background = '#00ff00';
+    // notie elements and styling
+    var progress_outer = document.createElement('div');
+    progress_outer.id = progress_outer_id;
+    progress_outer.style.position = 'fixed';
+    progress_outer.style.backgroundColor = '#f00ff0';
+    progress_outer.style.top = '0';
+    progress_outer.style.left = '0';
+    progress_outer.style.zIndex = '999999999';
+    progress_outer.style.height = 'auto';
+    progress_outer.style.width = '100%';
+    progress_outer.style.display = 'none';
+    progress_outer.style.textAlign = 'center';
+    progress_outer.style.cursor = 'default';
+    progress_outer.style.MozTransition = '';
+    progress_outer.style.WebkitTransition = '';
+    progress_outer.style.transition = '';
+    progress_outer.style.cursor = 'pointer';
     
+    // Hide progress on click
+    progress_outer.onclick = function() {
+        clearTimeout(progress_timeout_1);
+        clearTimeout(progress_timeout_2);
+        progress_hide();
+    };
+    
+    var progress_inner = document.createElement('div');
+    //aria
+    var att = document.createAttribute("role");
+    att.value = "progressbar";
+    progress_inner.setAttributeNode(att);
+    att = document.createAttribute("aria-valuenow");
+    att.value = "0";
+    progress_inner.setAttributeNode(att);
+    att = document.createAttribute("aria-valuemin");
+    att.value = "0";
+    progress_inner.setAttributeNode(att);
+    att = document.createAttribute("aria-valuemax");
+    att.value = "100";
+    progress_inner.setAttributeNode(att);
+
+
+    progress_inner.id = progress_inner_id;
+    progress_inner.style.padding = '24px';
+    progress_inner.style.width = '300px';
+    progress_inner.style.display = 'block';
+    progress_inner.style.verticalAlign = 'middle';
+    progress_inner.style.backgroundColor = '#f30000';
+    progress_inner.style.transition = 'width 2s';
+    progress_outer.appendChild(progress_inner);
+    
+    // Initialize notie text
+    var progress_text = document.createElement('span');
+    progress_text.id = progress_text_id;
+    progress_text.style.color = progress_color_text;
+    if (window.innerWidth <= font_change_screen_width) { progress_text.style.fontSize = font_size_small; }
+    else { progress_text.style.fontSize = font_size_big; }
+    window.addEventListener('resize', debounce(resizeListener.bind(null, progress_text), debounce_time), true);
+    progress_inner.appendChild(progress_text);
+
+    // Attach notie to the body element
+    document.body.appendChild(progress_outer);
+
+    // Declare variables
+    var height = 0;
+    var progress_is_showing = false;
+    var progress_timeout_1;
+    var progress_timeout_2;
+    var was_clicked_counter = 0;
+
+    function progress() {
+        type = 1;
+        message = "%%";
+        
+        // Blur active element for use of enter key, focus input
+        document.activeElement.blur();
+
+        was_clicked_counter++;
+
+        setTimeout(function() {
+            was_clicked_counter--;
+        }, (animation_delay * 1000 + 10));
+
+        if (was_clicked_counter == 1) {
+
+            if (progress_is_showing) {
+
+                clearTimeout(progress_timeout_1);
+                clearTimeout(progress_timeout_2);
+
+                progress_hide(function() {
+                    progress_show(type, message);
+                });
+
+            }
+            else {
+                progress_show(type, message);
+            }
+
+        }
+        return progress_inner;
+
+    }
+
+    function progress_add(element, percentage) {
+        element.style.width = percentage+'%';
+        element.setAttribute('aria-valuenow', percentage)
+    }
+
+    function progress_show(type, message) {
+
+        progress_is_showing = true;
+
+        var duration = 0;
+        
+        //duration non serve piu
+        duration = 9999999;
+
+        // Set notie type (background color)
+        switch(type) {
+            case 1:
+                progress_outer.style.backgroundColor = progress_color_success_background;
+                break;
+            case 2:
+                progress_outer.style.backgroundColor = progress_color_warning_background;
+                break;
+            case 3:
+                progress_outer.style.backgroundColor = progress_color_error_background;
+                break;
+            case 4:
+                progress_outer.style.backgroundColor = progress_color_info_background;
+                break;
+        }
+
+        // Set notie text
+        progress_text.innerHTML = message;
+
+        // Get notie's height
+        progress_outer.style.top = '-10000px';
+        progress_outer.style.display = 'table';
+        progress_outer.style.top = '-' + progress_outer.offsetHeight - 5 + 'px';
+
+        progress_timeout_1 = setTimeout(function() {
+
+            if (shadow) { progress_outer.style.boxShadow = '0px 0px 10px 0px rgba(0,0,0,0.5)'; }
+            progress_outer.style.MozTransition = 'all ' + animation_delay + 's ease';
+            progress_outer.style.WebkitTransition = 'all ' + animation_delay + 's ease';
+            progress_outer.style.transition = 'all ' + animation_delay + 's ease';
+
+            progress_outer.style.top = 0;
+
+            progress_timeout_2 = setTimeout(function() {
+
+                progress_hide(function() {
+                    // Nothing
+                });
+
+            }, duration);
+
+        }, 20);
+
+    }
+
+    function progress_hide(callback) {
+
+        progress_outer.style.top = '-' + progress_outer.offsetHeight - 5 + 'px';
+
+        setTimeout(function() {
+
+            if (shadow) { progress_outer.style.boxShadow = ''; }
+            progress_outer.style.MozTransition = '';
+            progress_outer.style.WebkitTransition = '';
+            progress_outer.style.transition = '';
+            
+            progress_outer.style.top = '-10000px';
+
+            progress_is_showing = false;
+
+            if (callback) { callback(); }
+
+        }, (animation_delay * 1000 + 10));
+
+    }
     
     
     return {
         alert: alert,
         confirm: confirm,
-        input: input
+        input: input,
+        progress: progress,
+        progress_add: progress_add
     };
 
 }();
